@@ -1,0 +1,19 @@
+{% macro sls_block(dict) %}
+    {% for key, value in dict.items() %}
+    - {{ key }}: {{ value|json() }}
+    {% endfor %}
+{% endmacro %}
+
+
+{% set activemq = salt['grains.filter_by']({
+    'Debian': {
+        'server': 'activemq',
+        'service': 'activemq',
+        'package': 'activemq',
+        'instance_available_path': '/etc/activemq/instances-available',
+        'instance_enabled_path': '/etc/activemq/instances-enabled',
+        'instance_use_symlink': True,
+        'packaged_default_instance_name': 'main',
+        'packaged_default_instance_enable': False,
+    },
+}, grain='lsb_distrib_release', merge=salt['pillar.get']('activemq:lookup'), default='Debian') %}

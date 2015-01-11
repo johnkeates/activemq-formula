@@ -1,0 +1,27 @@
+# activemq formula configuration and mapping overrides:
+activemq:
+  "server": "activemq", # You can leave this blank if you use a supported distro listed in map.jinja
+  "service": "activemq", # for unsupported distros
+  "package": "activemq", # for unsupported distros
+  "instance_available_path": "/etc/activemq/instances-available", # for debian and derived distros
+  "instance_enabled_path": "/etc/activemq/instances-enabled", # for debian and derived distros
+  "instance_use_symlink": True, # for debian and derived distros
+  "packaged_default_instance_name": "main", # This is the default on Debian
+  "packaged_default_instance_enable": False, # This is to keep the package"s default instance from running
+  instances:
+      amq0: # must be unique; used as an ID declaration in Salt; also passed to the template context as {{ id }}
+            brokers:
+                broker0: # must be unique; used as an ID declaration in Salt; also passed to the template context as {{ id }}
+                    brokerName: "broker0"
+                    dataDirectory: "${activemq.base}/data" # This variable is actually processed outside of salt
+                    persistenceAdapters:
+                        persistenceAdapter0:
+                            persistenceAdapter: "kahaDB"
+                            persistenceAdapter_directory: "${activemq.base}/data/kahadb"
+                    transportConnectors:
+                        connector0: # use unique identifiers here as well as it is used by Salt as an ID declaration
+                            name: "openwire",
+                            uri: "tcp://0.0.0.0:61617",
+                        connector1:
+                            name: "stomp+nio",
+                            uri: "stomp+nio://0.0.0.0:61614?needClientAuth=false",

@@ -1,0 +1,44 @@
+<beans
+  xmlns="http://www.springframework.org/schema/beans"
+  xmlns:amq="http://activemq.apache.org/schema/core"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+  http://activemq.apache.org/schema/core http://activemq.apache.org/schema/core/activemq-core.xsd">
+
+    <!-- Allows us to use system properties as variables in this configuration file -->
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+<!--    <property name="locations">
+        <value>file:conf/credentials.properties</value>
+    </property>
+-->   </bean>
+
+
+    <broker xmlns="http://activemq.apache.org/schema/core"
+            brokerName="timberprint"
+            dataDirectory="${activemq.base}/data">
+
+
+        <!-- 
+            Configure message persistence for the broker. The default persistence
+            mechanism is the KahaDB store (identified by the kahaDB tag). 
+            For more information, see: 
+            
+            http://activemq.apache.org/persistence.html 
+        -->
+        <persistenceAdapter>
+            <kahaDB directory="${activemq.base}/data/kahadb"/>
+        </persistenceAdapter>
+
+        <!-- 
+            The transport connectors expose ActiveMQ over a given protocol to
+            clients and other brokers. For more information, see: 
+            
+            http://activemq.apache.org/configuring-transports.html 
+        -->
+        <transportConnectors>
+            <transportConnector name="openwire" uri="tcp://0.0.0.0:61617"/>
+        <transportConnector name="stomp+nio" uri="stomp+nio://0.0.0.0:61614?needClientAuth=false"/>
+        </transportConnectors>
+    </broker>
+    <import resource="conf/jetty.xml" />
+</beans>
