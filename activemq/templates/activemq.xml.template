@@ -18,26 +18,26 @@
             dataDirectory="${activemq.base}/data">
 
 
-        <!-- 
+        <!--
             Configure message persistence for the broker. The default persistence
-            mechanism is the KahaDB store (identified by the kahaDB tag). 
-            For more information, see: 
-            
-            http://activemq.apache.org/persistence.html 
+            mechanism is the KahaDB store (identified by the kahaDB tag).
+            For more information, see:
+
+            http://activemq.apache.org/persistence.html
         -->
         <persistenceAdapter>
             <kahaDB directory="${activemq.base}/data/kahadb"/>
         </persistenceAdapter>
 
-        <!-- 
+        <!--
             The transport connectors expose ActiveMQ over a given protocol to
-            clients and other brokers. For more information, see: 
-            
-            http://activemq.apache.org/configuring-transports.html 
+            clients and other brokers. For more information, see:
+
+            http://activemq.apache.org/configuring-transports.html
         -->
         <transportConnectors>
             <transportConnector name="openwire" uri="tcp://0.0.0.0:61617"/>
-        <transportConnector name="stomp+nio" uri="stomp+nio://0.0.0.0:61614?needClientAuth=false"/>
+            <transportConnector name="stomp+nio" uri="stomp+nio://0.0.0.0:61614?needClientAuth=false"/>
         </transportConnectors>
     </broker>
     <import resource="conf/jetty.xml" />
